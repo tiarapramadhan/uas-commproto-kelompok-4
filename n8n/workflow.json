@@ -1,1 +1,185 @@
-
+{
+  "name": "UAS - Notify New Student Score (2 Channel)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "notify-score",
+        "options": {}
+      },
+      "id": "6b384670-6b6c-4dba-8084-28158ba81935",
+      "name": "Webhook - Receive from FastAPI",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        752
+      ],
+      "webhookId": "7721e26f-6f9a-4d71-bb84-f7c6ff4d6a01"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a8ee3b10-c364-4362-baaf-ae335502b28f",
+              "name": "=predikat",
+              "value": "={{ $json.body.nilai >= 80 ? \"Lulus dengan Baik\" : \"Perlu Perbaikan\" }}",
+              "type": "string"
+            },
+            {
+              "id": "e19cc1cf-8fd6-4da7-b8f8-cc736948fecf",
+              "name": "=pesan",
+              "value": "={{ \"Data mahasiswa baru masuk:\\nNama: \" + $json.body.nama + \"\\nNIM: \" + $json.body.nim + \"\\nMata Kuliah: \" + $json.body.mata_kuliah + \"\\nNilai: \" + $json.body.nilai + \"\\nSemester: \" + $json.body.semester }}",
+              "type": "string"
+            },
+            {
+              "id": "6a0a2a58-0e42-4bd0-af96-d9c0d3f5bbe8",
+              "name": "=nilai",
+              "value": "={{ $json.body.nilai }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "1fd802fa-fcba-49c1-b0bd-b20c503d358d",
+      "name": "Set - Format Notification Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -896,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.nilai }}",
+              "rightValue": 80,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "be9e67dd-ab9f-418f-b3de-584ae3ef04ec",
+      "name": "IF - Check Nilai Threshold",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://discord.com/api/webhooks/1524663109686525972/73UZ2Z6o4b0JWH5SJgBqdsYImnbU1RhWKzXBIUt4vabNSF7b-zoTWWFJMfcPmem9wrVz",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"content\":\"🏆 [Lulus dengan Baik] Data mahasiswa baru masuk:\\nNama: agus Santoso\\nNIM: 2201234567\\nMata Kuliah: Communication Protocol\\nNilai: 95\\nSemester: 2\"}",
+        "options": {}
+      },
+      "id": "59aa226d-a850-45ce-995b-8d4568162691",
+      "name": "Send Discord - Channel Prestasi",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -400,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://discord.com/api/webhooks/1524663446027636887/IB--lI92172GHeM_HpoyIS1G88YCKH9z2L_FWLCHu0EFjOor4prKpSO89btssG7K3QMt",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"content\":\"⚠️ [Perlu Perbaikan] Data mahasiswa baru masuk:\\nNama: siti amino\\nNIM: 2201234567\\nMata Kuliah: Communication Protocol\\nNilai: 45\\nSemester: 2\"}",
+        "options": {}
+      },
+      "id": "2653f2ec-2874-4653-bcd9-7ece81bd0ad3",
+      "name": "Send Discord - Channel Bimbingan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -400,
+        800
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook - Receive from FastAPI": {
+      "main": [
+        [
+          {
+            "node": "Set - Format Notification Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Format Notification Data": {
+      "main": [
+        [
+          {
+            "node": "IF - Check Nilai Threshold",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Check Nilai Threshold": {
+      "main": [
+        [
+          {
+            "node": "Send Discord - Channel Prestasi",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Discord - Channel Bimbingan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1,
+    "availableInMCP": false
+  },
+  "versionId": "bd7d3726-35e2-4d6b-952f-6fb7ce51bea4",
+  "meta": {
+    "instanceId": "61c9442da1e0b50b4504ce4b3b280d1f519bafaae258d403221392901a2f7f16"
+  },
+  "nodeGroups": [],
+  "id": "S6fTAg2s0MJ3xnX8",
+  "tags": []
+}
