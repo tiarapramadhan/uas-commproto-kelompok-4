@@ -92,7 +92,7 @@
         "url": "https://discord.com/api/webhooks/1524663109686525972/73UZ2Z6o4b0JWH5SJgBqdsYImnbU1RhWKzXBIUt4vabNSF7b-zoTWWFJMfcPmem9wrVz",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "{\"content\":\"🏆 [Lulus dengan Baik] Data mahasiswa baru masuk:\\nNama: agus Santoso\\nNIM: 2201234567\\nMata Kuliah: Communication Protocol\\nNilai: 95\\nSemester: 2\"}",
+        "jsonBody": "={{ JSON.stringify({ content: '🏆 [' + $json.predikat + '] ' + $json.pesan }) }}",
         "options": {}
       },
       "id": "59aa226d-a850-45ce-995b-8d4568162691",
@@ -110,7 +110,7 @@
         "url": "https://discord.com/api/webhooks/1524663446027636887/IB--lI92172GHeM_HpoyIS1G88YCKH9z2L_FWLCHu0EFjOor4prKpSO89btssG7K3QMt",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\"content\":\"⚠️ [Perlu Perbaikan] Data mahasiswa baru masuk:\\nNama: siti amino\\nNIM: 2201234567\\nMata Kuliah: Communication Protocol\\nNilai: 45\\nSemester: 2\"}",
+        "jsonBody": "={{ JSON.stringify({ content: '⚠️ [' + $json.predikat + '] ' + $json.pesan }) }}",
         "options": {}
       },
       "id": "2653f2ec-2874-4653-bcd9-7ece81bd0ad3",
@@ -170,12 +170,11 @@
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
+    "availableInMCP": false,
     "timeSavedMode": "fixed",
-    "callerPolicy": "workflowsFromSameOwner",
-    "executionTimeout": -1,
-    "availableInMCP": false
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "bd7d3726-35e2-4d6b-952f-6fb7ce51bea4",
+  "versionId": "24db4df8-5a08-4544-aa1a-9d4f81e6c4ab",
   "meta": {
     "instanceId": "61c9442da1e0b50b4504ce4b3b280d1f519bafaae258d403221392901a2f7f16"
   },
