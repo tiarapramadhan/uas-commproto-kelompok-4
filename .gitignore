@@ -1,0 +1,24 @@
+# Logs
+server.log
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (kalau ada tooling tambahan)
+node_modules/
+
+# Editor
+.vscode/
+.idea/
